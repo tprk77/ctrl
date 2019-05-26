@@ -22,6 +22,7 @@ NEEDED_PACKAGES=(
     "gcc-arm-none-eabi"
     "libnewlib-arm-none-eabi"
     "libnewlib-dev"
+    "rsync"
 )
 
 for package in ${NEEDED_PACKAGES[@]}; do
