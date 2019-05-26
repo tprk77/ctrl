@@ -89,6 +89,8 @@ if [ "${#NEEDS_FIX_PACKAGES[@]}" -gt 0 ]; then
         echo "    * ${package}"
     done
     echo ""
+    echo "See also: https://github.com/qmk/qmk_firmware/issues/4209"
+    echo ""
     echo "############################################################"
     echo ""
     FIXED_PACKAGES=()
