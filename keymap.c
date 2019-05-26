@@ -3,6 +3,7 @@
 #include QMK_KEYBOARD_H
 
 #include "ctrl_transpose.h"
+#include "rgb_modes.h"
 
 #define KEYMAP LAYOUT_transpose
 
@@ -28,10 +29,14 @@ enum tprk77_mod_keys {
 
 enum tprk77_keys {
   MC_PI = SR,   /* 3.14159265358979323846 (As defined in "math.h") */
-  MC_TODO,      /* TODO */
+  MC_MODI,      /* Next RGB mode */
+  MC_MODD,      /* Previous RGB mode */
 };
 
 #undef SR
+
+/* State for the current RGB mode */
+int current_mode = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /*
@@ -93,7 +98,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
       KC_LEFT,                   KC_DEL,  KC_INS,  KC_PSCR,
       KC_DOWN, KC_UP,            KC_END,  KC_HOME, MC_PI,
-      KC_RGHT,                   KC_PGDN, KC_PGUP, MC_TODO
+      KC_RGHT,                   KC_PGDN, KC_PGUP, XXXXXXX
   ),
 
   /*
@@ -153,9 +158,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       XXXXXXX, KC_RSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
       KC_RCTL,                   XXXXXXX, MD_CADL,
 
-      XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX,
-      XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX,
-      XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX
+      MC_MODD,                   XXXXXXX, XXXXXXX, XXXXXXX,
+      RGB_HUD, RGB_HUI,          XXXXXXX, XXXXXXX, XXXXXXX,
+      MC_MODI,                   XXXXXXX, XXXXXXX, XXXXXXX
   ),
 };
 
@@ -171,8 +176,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record)
       case MC_PI:
         SEND_STRING("3.14159265358979323846");
         return false;
-      case MC_TODO:
-        SEND_STRING("TODO");
+      case MC_MODI:
+        if (++current_mode >= tprk77_num_rgb_modes) {
+          current_mode = 0;
+        }
+        rgblight_mode(tprk77_rgb_modes[current_mode]);
+        return false;
+      case MC_MODD:
+        if (--current_mode < 0) {
+          current_mode = tprk77_num_rgb_modes - 1;
+        }
+        rgblight_mode(tprk77_rgb_modes[current_mode]);
         return false;
     }
   }
@@ -181,7 +195,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record)
 
 void matrix_init_user(void)
 {
-  /* TODO Set up LED stuff? */
+  /*
+   * NOTE The Ctrl doesn't currently have EEPROM functionality.
+   * This means that the RGB setting will reset every time.
+   *
+   * See also: https://github.com/qmk/qmk_firmware/issues/4625
+   */
+  rgblight_mode(tprk77_rgb_modes[current_mode]);
 }
 
   /*
