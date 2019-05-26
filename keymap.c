@@ -31,12 +31,23 @@ enum tprk77_keys {
   MC_PI = SR,   /* 3.14159265358979323846 (As defined in "math.h") */
   MC_MODI,      /* Next RGB mode */
   MC_MODD,      /* Previous RGB mode */
+  MC_MREC,      /* Macro Record */
+  MC_MPLY,      /* Macro Stop and Play */
+  DYNAMIC_MACRO_RANGE,  /* Dynamic Macros (Must be at the end) */
 };
 
 #undef SR
 
+/*
+ * NOTE This must be included AFTER defining DYNAMIC_MACRO_RANGE!
+ */
+#include "dynamic_macro.h"
+
 /* State for the current RGB mode */
 int current_mode = 0;
+
+/* State for dynamic macro stop/play toggle */
+int dyn_macro_stopped = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /*
@@ -97,8 +108,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_RCTL,                   KC_BSLS, KC_BSPC,
 
       KC_LEFT,                   KC_DEL,  KC_INS,  KC_PSCR,
-      KC_DOWN, KC_UP,            KC_END,  KC_HOME, MC_PI,
-      KC_RGHT,                   KC_PGDN, KC_PGUP, XXXXXXX
+      KC_DOWN, KC_UP,            KC_END,  KC_HOME, MC_MREC,
+      KC_RGHT,                   KC_PGDN, KC_PGUP, MC_MPLY
   ),
 
   /*
@@ -170,6 +181,10 @@ const uint16_t PROGMEM fn_actions[] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record)
 {
+  /* Process dynamic macro keys */
+  if (!process_record_dynamic_macro(keycode, record)) {
+    return false;
+  }
   /* Process macro keys */
   if (record->event.pressed) {
     switch (keycode) {
@@ -187,6 +202,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record)
           current_mode = tprk77_num_rgb_modes - 1;
         }
         rgblight_mode(tprk77_rgb_modes[current_mode]);
+        return false;
+      case MC_MREC:
+        {
+          keyrecord_t fake_record = {0};
+          fake_record.event.pressed = 0;  /* Record needs to be released */
+          process_record_dynamic_macro(DYN_REC_START1, &fake_record);
+          dyn_macro_stopped = 0;
+        }
+        return false;
+      case MC_MPLY:
+        {
+          keyrecord_t fake_record = {0};
+          if (!dyn_macro_stopped) {
+            dyn_macro_stopped = 1;
+            fake_record.event.pressed = 1;  /* Stop needs to be pressed */
+            process_record_dynamic_macro(DYN_REC_STOP, &fake_record);
+          } else {
+            fake_record.event.pressed = 0;  /* Play needs to be released */
+            process_record_dynamic_macro(DYN_MACRO_PLAY1, &fake_record);
+          }
+        }
         return false;
     }
   }
