@@ -38,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * QWERTY (BASE) LAYER:
    *
    * ,----------------------------------.   ,------.
-   * | Ctrl |      | Caps | Tab  |  `   |   | Esc  |
+   * | Ctrl |      | Nav  | Tab  |  `   |   | Esc  |
    * |------| Shft |------+------+------|   |------|
    * | GUI  |      |  A   |  Q   |  1   |   | F1   |
    * |------+------+------+------+------|   |------|
@@ -76,7 +76,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * `------'             `-------------'   `------'
    */
   [LR_QWTY] = LAYOUT_transpose(
-      KC_LCTL, KC_LSFT, KC_CAPS, KC_TAB,  KC_GRV,  KC_ESC,
+      KC_LCTL, KC_LSFT, MO_NAV,  KC_TAB,  KC_GRV,  KC_ESC,
       KC_LGUI,          KC_A,    KC_Q,    KC_1,    KC_F1,
       KC_LALT, KC_Z,    KC_S,    KC_W,    KC_2,    KC_F2,
                KC_X,    KC_D,    KC_E,    KC_3,    KC_F3,
@@ -94,6 +94,68 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_LEFT,                   KC_DEL,  KC_INS,  KC_PSCR,
       KC_DOWN, KC_UP,            KC_END,  KC_HOME, MC_PI,
       KC_RGHT,                   KC_PGDN, KC_PGUP, MC_TODO
+  ),
+
+  /*
+   * NAV LAYER:
+   *
+   * ,----------------------------------.   ,------.
+   * | Ctrl |      | Nav  | XXXX | XXXX |   | XXXX |
+   * |------| Shft |------+------+------|   |------|
+   * | GUI  |      | XXXX | XXXX | XXXX |   | XXXX |
+   * |------+------+------+------+------|   |------|
+   * | Alt  | XXXX | XXXX | XXXX | XXXX |   | XXXX |
+   * |------+------+------+------+------|   |------|
+   * |      | XXXX | XXXX | XXXX | XXXX |   | XXXX |
+   * |      |------+------+------+------|   |------|
+   * |      | XXXX | XXXX | XXXX | XXXX |   | XXXX |
+   * |      |------+------+------+------|   |------|
+   * |      | XXXX | XXXX | XXXX | XXXX |   | XXXX |
+   * |      |------+------+------+------|   |------|
+   * | Ctrl | XXXX | PgDn | PgUp | XXXX |   | XXXX |
+   * |      |------+------+------+------|   |------|
+   * |      | XXXX | Left | Home | XXXX |   | XXXX |
+   * |      |------+------+------+------|   |------|
+   * |      | XXXX | Down | Up   | XXXX |   | XXXX |
+   * |      |------+------+------+------|   |------|
+   * |      | XXXX | Rght | End  | XXXX |   | XXXX |
+   * |------+------+------+------+------|   |------|
+   * | Alt  | XXXX | XXXX | XXXX | XXXX |   | XXXX |
+   * |------+------+------+------+------|   |------|
+   * | GUI  | XXXX | XXXX | XXXX | XXXX |   | XXXX |
+   * |------+------+------+------+------|   |------|
+   * | XXXX |      |      | XXXX | XXXX |   | XXXX |
+   * |------| Shft | XXXX |------+------|   `------'
+   * | Ctrl |      |      | XXXX |C-A-Dl|
+   * `----------------------------------'
+            *
+   * ,------.             ,-------------.   ,------.
+   * | XXXX |             | XXXX | XXXX |   | XXXX |
+   * |------+------.      |------+------|   |------|
+   * | XXXX | XXXX |      | XXXX | XXXX |   | XXXX |
+   * |------+------'      |------+------|   |------|
+   * | XXXX |             | XXXX | XXXX |   | XXXX |
+   * `------'             `-------------'   `------'
+   */
+  [LR_NAV] = LAYOUT_transpose(
+      KC_LCTL, KC_LSFT, MO_NAV,  XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_LGUI,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_LALT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+               XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+               XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+               XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_LCTL, XXXXXXX, KC_PGDN, KC_PGUP, XXXXXXX, XXXXXXX,
+               XXXXXXX, KC_LEFT, KC_HOME, XXXXXXX, XXXXXXX,
+               XXXXXXX, KC_DOWN, KC_UP,   XXXXXXX, XXXXXXX,
+               XXXXXXX, KC_RGHT, KC_END,  XXXXXXX, XXXXXXX,
+      KC_RALT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_RGUI, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, KC_RSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      KC_RCTL,                   XXXXXXX, MD_CADL,
+
+      XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX
   ),
 };
 
