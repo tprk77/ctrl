@@ -199,9 +199,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record)
       case MC_MESG:
         send_string(&tprk77_message_data[tprk77_message_offsets[current_message]]);
         send_string(" ");  /* Trailing space as a separator */
-        if (++current_message >= tprk77_num_messages) {
-          current_message = 0;
-        }
+        srand(timer_read32());  /* Always re-seed with the time */
+        current_message = rand() % tprk77_num_messages;
         return false;
       case MC_MODI:
         if (++current_mode >= tprk77_num_rgb_modes) {
