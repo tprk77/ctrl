@@ -4,6 +4,7 @@
 
 #include "ctrl_transpose.h"
 #include "rgb_modes.h"
+#include "messages.h"
 
 #define KEYMAP LAYOUT_transpose
 
@@ -29,6 +30,7 @@ enum tprk77_mod_keys {
 
 enum tprk77_keys {
   MC_PI = SR,   /* 3.14159265358979323846 (As defined in "math.h") */
+  MC_MESG,      /* Print a message */
   MC_MODI,      /* Next RGB mode */
   MC_MODD,      /* Previous RGB mode */
   MC_MREC,      /* Macro Record */
@@ -42,6 +44,9 @@ enum tprk77_keys {
  * NOTE This must be included AFTER defining DYNAMIC_MACRO_RANGE!
  */
 #include "dynamic_macro.h"
+
+/* State for messages, etc */
+int current_message = 0;
 
 /* State for the current RGB mode */
 int current_mode = 0;
@@ -166,7 +171,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                XXXXXXX, KC_RGHT, KC_END,  XXXXXXX, XXXXXXX,
       KC_RALT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
       KC_RGUI, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-      XXXXXXX, KC_RSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, KC_RSFT, MC_MESG, XXXXXXX, XXXXXXX, XXXXXXX,
       KC_RCTL,                   XXXXXXX, MD_CADL,
 
       MC_MODD,                   XXXXXXX, XXXXXXX, XXXXXXX,
@@ -190,6 +195,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record)
     switch (keycode) {
       case MC_PI:
         SEND_STRING("3.14159265358979323846");
+        return false;
+      case MC_MESG:
+        send_string(&tprk77_message_data[tprk77_message_offsets[current_message]]);
+        send_string(" ");  /* Trailing space as a separator */
+        if (++current_message >= tprk77_num_messages) {
+          current_message = 0;
+        }
         return false;
       case MC_MODI:
         if (++current_mode >= tprk77_num_rgb_modes) {
@@ -238,6 +250,8 @@ void matrix_init_user(void)
    * See also: https://github.com/qmk/qmk_firmware/issues/4625
    */
   rgblight_mode(tprk77_rgb_modes[current_mode]);
+  /* Decypher the scrambled messages */
+  tprk77_decypher_messages();
 }
 
   /*
