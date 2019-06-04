@@ -46,6 +46,7 @@ enum tprk77_keys {
 #include "dynamic_macro.h"
 
 /* State for messages, etc */
+bool is_randomized = false;
 int current_message = 0;
 
 /* State for the current RGB mode */
@@ -199,7 +200,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record)
       case MC_MESG:
         send_string(&tprk77_message_data[tprk77_message_offsets[current_message]]);
         send_string(" ");  /* Trailing space as a separator */
-        srand(timer_read32());  /* Always re-seed with the time */
+        if (!is_randomized) {
+          /* Seed with the time of the first message */
+          srand(timer_read32());
+          is_randomized = true;
+        }
         current_message = rand() % tprk77_num_messages;
         return false;
       case MC_MODI:
