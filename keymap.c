@@ -128,7 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------|   |------|
    * | Alt  | XXXX | XXXX | XXXX | XXXX |   | XXXX |
    * |------+------+------+------+------|   |------|
-   * |      | XXXX | XXXX | XXXX | XXXX |   | XXXX |
+   * |      | XXXX | XXXX | XXXX |  Pi  |   | XXXX |
    * |      |------+------+------+------|   |------|
    * |      | XXXX | XXXX | XXXX | XXXX |   | XXXX |
    * |      |------+------+------+------|   |------|
@@ -147,16 +147,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * | GUI  | XXXX | XXXX | XXXX | XXXX |   | XXXX |
    * |------+------+------+------+------|   |------|
    * | XXXX |      |      | XXXX | XXXX |   | XXXX |
-   * |------| Shft | XXXX |------+------|   `------'
+   * |------| Shft | Mesg |------+------|   `------'
    * | Ctrl |      |      | XXXX |C-A-Dl|
    * `----------------------------------'
-            *
+   *
    * ,------.             ,-------------.   ,------.
-   * | XXXX |             | XXXX | XXXX |   | XXXX |
+   * | LED- |             | XXXX | XXXX |   | XXXX |
    * |------+------.      |------+------|   |------|
-   * | XXXX | XXXX |      | XXXX | XXXX |   | XXXX |
+   * | Hue- | Hue+ |      | XXXX | XXXX |   | XXXX |
    * |------+------'      |------+------|   |------|
-   * | XXXX |             | XXXX | XXXX |   | XXXX |
+   * | LED+ |             | XXXX | XXXX |   | XXXX |
    * `------'             `-------------'   `------'
    */
   [LR_NAV] = LAYOUT_transpose(
