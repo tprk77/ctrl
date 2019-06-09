@@ -152,11 +152,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * `----------------------------------'
    *
    * ,------.             ,-------------.   ,------.
-   * | LED- |             | XXXX | XXXX |   | XXXX |
+   * | LED- |             | Mute | Play |   | XXXX |
    * |------+------.      |------+------|   |------|
-   * | Hue- | Hue+ |      | XXXX | XXXX |   | XXXX |
+   * | Hue- | Hue+ |      | Next | Prev |   | XXXX |
    * |------+------'      |------+------|   |------|
-   * | LED+ |             | XXXX | XXXX |   | XXXX |
+   * | LED+ |             | Vol- | Vol+ |   | XXXX |
    * `------'             `-------------'   `------'
    */
   [LR_NAV] = LAYOUT_transpose(
@@ -175,9 +175,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       XXXXXXX, KC_RSFT, MC_MESG, XXXXXXX, XXXXXXX, XXXXXXX,
       KC_RCTL,                   XXXXXXX, MD_CADL,
 
-      MC_MODD,                   XXXXXXX, XXXXXXX, XXXXXXX,
-      RGB_HUD, RGB_HUI,          XXXXXXX, XXXXXXX, XXXXXXX,
-      MC_MODI,                   XXXXXXX, XXXXXXX, XXXXXXX
+      MC_MODD,                   KC_MUTE, KC_MPLY, XXXXXXX,
+      RGB_HUD, RGB_HUI,          KC_MNXT, KC_MPRV, XXXXXXX,
+      MC_MODI,                   KC_VOLD, KC_VOLU, XXXXXXX
   ),
 };
 
